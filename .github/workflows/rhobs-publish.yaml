@@ -1,0 +1,39 @@
+name: publish
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*-rhobs*'
+      - '!pkg*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish rhobs container images
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Import environment variables from file
+        run: cat ".github/env" >> $GITHUB_ENV
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '${{ env.golang-version }}'
+      - name: login to quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.quay_username }}
+          password: ${{ secrets.quay_password }}
+
+      - name: Build RHOBS images and push
+        env:
+          IMAGE_ORG: ${{ secrets.IMAGE_ORG }}
+          REGISTRIES: ${{ secrets.REGISTRIES }}
+        run:
+
+          IMAGE_OPERATOR="$IMAGE_ORG/obo-prometheus-operator" \
+          IMAGE_WEBHOOK="$IMAGE_ORG/obo-admission-webhook" \
+          IMAGE_RELOADER="$IMAGE_ORG/obo-prometheus-config-reloader" \
+          CPU_ARCHS="amd64" \
+          ./scripts/push-docker-image.sh
