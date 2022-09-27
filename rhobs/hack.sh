@@ -79,6 +79,7 @@ change_api_group(){
     sed -i  \
       -e 's|monitoring.coreos.com|monitoring.rhobs|g'   \
       -e 's|+kubebuilder:resource:categories="prometheus-operator".*|+kubebuilder:resource:categories="rhobs-prometheus-operator"|g' \
+      -e 's|github.com/prometheus-operator/prometheus-operator|github.com/rhobs/obo-prometheus-operator|g' \
   {} \;
 }
 
@@ -105,13 +106,13 @@ main() {
 
   info "Version bumped to: $version"
 
-  change_api_group
-  make generate
+  # change_api_group
+  # make generate
 
   # generate_stripped_down_crds
 
-  create_git_tags "$version"
-  publish_images "$version"
+  # create_git_tags "$version"
+  # publish_images "$version"
 
   return $?
 }

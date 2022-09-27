@@ -100,7 +100,7 @@ You now have an application running in Kubernetes and exposed to the internet.
 
 Now that we have an application running and exposed by Ambassador, we need to configure Prometheus to scrape the metrics from Ambassador. The Prometheus Operator gives us a way to deploy and manage Prometheus deployments using Kubernetes-style resources
 
-The Prometheus Operator creates Kubernetes Custom Resource Definitions (CRDs) so we can manage our Prometheus deployment using Kubernetes-style declarative YAML manifests. To deploy the Prometheus Operator, you can clone the [repository](https://github.com/prometheus-operator/prometheus-operator) and follow the instructions in the README. You can also just create it with `kubectl`:
+The Prometheus Operator creates Kubernetes Custom Resource Definitions (CRDs) so we can manage our Prometheus deployment using Kubernetes-style declarative YAML manifests. To deploy the Prometheus Operator, you can clone the [repository](https://github.com/rhobs/obo-prometheus-operator) and follow the instructions in the README. You can also just create it with `kubectl`:
 
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml
@@ -132,7 +132,7 @@ spec:
   selector:
     prometheus: prometheus
 ---
-apiVersion: monitoring.coreos.com/v1
+apiVersion: monitoring.rhobs/v1
 kind: Prometheus
 metadata:
   name: prometheus
@@ -163,7 +163,7 @@ Finally, we need tell Prometheus where to scrape metrics from. The Prometheus Op
 
 ```yaml
 ---
-apiVersion: monitoring.coreos.com/v1
+apiVersion: monitoring.rhobs/v1
 kind: ServiceMonitor
 metadata:
   name: ambassador-monitor

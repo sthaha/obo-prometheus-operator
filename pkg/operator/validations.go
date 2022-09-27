@@ -17,7 +17,7 @@ package operator
 import (
 	"github.com/alecthomas/units"
 	"github.com/pkg/errors"
-	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
+	monitoringv1 "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/prometheus/common/model"
 )
 

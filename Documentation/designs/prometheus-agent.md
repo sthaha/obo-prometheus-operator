@@ -6,7 +6,7 @@ The Prometheus 2.32.0 release introduces the Prometheus Agent, a mode optimized 
 
 ## Background
 
-The Prometheus Operator in its current state does not allow a simple way of deploying the Prometheus agent. A potential workaround has been described in a [Github comment](https://github.com/prometheus-operator/prometheus-operator/issues/3989#issuecomment-974137486), where the agent can be deployed through the existing Prometheus CRD by explicitly setting command-line arguments specific to the agent mode.
+The Prometheus Operator in its current state does not allow a simple way of deploying the Prometheus agent. A potential workaround has been described in a [Github comment](https://github.com/rhobs/obo-prometheus-operator/issues/3989#issuecomment-974137486), where the agent can be deployed through the existing Prometheus CRD by explicitly setting command-line arguments specific to the agent mode.
 
 As described in the comment, one significant problem with this approach is that the Prometheus Operator always generates `alerts` and `rules` sections in the Prometheus config file. These sections are not allowed when running the agent so users need to take additional actions to pause reconciliation of the Prometheus CR, tweak the generated secret and then unpause reconciliation in order to resolve the problem. Alternatively, users can apply a strategic merge patch to the prometheus container as described in the kube-prometheus docs: [https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/prometheus-agent.md](https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/prometheus-agent.md)
 
@@ -165,7 +165,7 @@ spec:
 
 ## Additional implementation details
 
-There has been a suggestion in [a Github comment](https://github.com/prometheus-operator/prometheus-operator/issues/3989#issuecomment-821249404) to introduce a ScrapeConfig CRD in parallel to adding the PrometheusAgent CRD, and “translate” PrometheusAgent CRs to ScrapeConfig CRs. The main challenge with this approach is that it significantly increases the scope of the work that needs to be done to support deploying Prometheus agents.
+There has been a suggestion in [a Github comment](https://github.com/rhobs/obo-prometheus-operator/issues/3989#issuecomment-821249404) to introduce a ScrapeConfig CRD in parallel to adding the PrometheusAgent CRD, and “translate” PrometheusAgent CRs to ScrapeConfig CRs. The main challenge with this approach is that it significantly increases the scope of the work that needs to be done to support deploying Prometheus agents.
 
 A leaner alternative would be to focus on implementing the PrometheusAgent CRD by reusing code from the existing Prometheus controller. The ScrapeConfig can then be introduced separately, and the PrometheusAgent can be the first CRD which gets migrated to it.
 
