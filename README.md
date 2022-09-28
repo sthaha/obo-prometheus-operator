@@ -1,6 +1,6 @@
 # Prometheus Operator
 
-[![Build Status](https://github.com/prometheus-operator/prometheus-operator/workflows/ci/badge.svg)](https://github.com/prometheus-operator/prometheus-operator/actions)
+[![Build Status](https://github.com/rhobs/obo-prometheus-operator/workflows/ci/badge.svg)](https://github.com/rhobs/obo-prometheus-operator/actions)
 [![Go Report Card](https://goreportcard.com/badge/prometheus-operator/prometheus-operator "Go Report Card")](https://goreportcard.com/report/prometheus-operator/prometheus-operator)
 [![Slack](https://img.shields.io/badge/join%20slack-%23prometheus--operator-brightgreen.svg)](http://slack.k8s.io/)
 
@@ -25,7 +25,7 @@ The Prometheus operator includes, but is not limited to, the following features:
 * **Prometheus Target Configuration**: Automatically generate monitoring target configurations based
   on familiar Kubernetes label queries; no need to learn a Prometheus specific configuration language.
 
-For an introduction to the Prometheus Operator, see the [getting started](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) guide.
+For an introduction to the Prometheus Operator, see the [getting started](https://github.com/rhobs/obo-prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) guide.
 
 ## Prometheus Operator vs. kube-prometheus vs. community helm chart
 
@@ -146,11 +146,11 @@ for n in $(kubectl get namespaces -o jsonpath={..metadata.name}); do
 done
 
 kubectl delete --ignore-not-found customresourcedefinitions \
-  prometheuses.monitoring.coreos.com \
-  servicemonitors.monitoring.coreos.com \
-  podmonitors.monitoring.coreos.com \
-  alertmanagers.monitoring.coreos.com \
-  prometheusrules.monitoring.coreos.com
+  prometheuses.monitoring.rhobs \
+  servicemonitors.monitoring.rhobs \
+  podmonitors.monitoring.rhobs \
+  alertmanagers.monitoring.rhobs \
+  prometheusrules.monitoring.rhobs
 ```
 
 ## Development
@@ -164,7 +164,7 @@ kubectl delete --ignore-not-found customresourcedefinitions \
 ### Testing
 
 > Ensure that you're running tests in the following path:
-> `$GOPATH/src/github.com/prometheus-operator/prometheus-operator` as tests expect paths to
+> `$GOPATH/src/github.com/rhobs/obo-prometheus-operator` as tests expect paths to
 > match. If you're working from a fork, just add the forked repo as a remote and
 > pull against your local prometheus-operator checkout before running tests.
 
