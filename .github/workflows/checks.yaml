@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - 'rhobs-rel-*'
-    tags:
-      - 'v*'
+    # tags:
+      # - 'v*'
 jobs:
   generate:
     runs-on: ${{ matrix.os }}

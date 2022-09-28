@@ -23,15 +23,14 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: quay.io
-          username: ${{ secrets.quay_username }}
-          password: ${{ secrets.quay_password }}
+          username: ${{ secrets.quay_repo_username }}
+          password: ${{ secrets.quay_repo_password }}
 
       - name: Build RHOBS images and push
         env:
           IMAGE_ORG: ${{ secrets.IMAGE_ORG }}
-          REGISTRIES: ${{ secrets.REGISTRIES }}
         run:
-
+          REGISTRIES="quay.io" \
           IMAGE_OPERATOR="$IMAGE_ORG/obo-prometheus-operator" \
           IMAGE_WEBHOOK="$IMAGE_ORG/obo-admission-webhook" \
           IMAGE_RELOADER="$IMAGE_ORG/obo-prometheus-config-reloader" \
