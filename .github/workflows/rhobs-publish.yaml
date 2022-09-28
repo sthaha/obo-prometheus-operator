@@ -1,6 +1,5 @@
-name: publish
+name: publish rhobs
 on:
-  workflow_dispatch:
   push:
     tags:
       - 'v*-rhobs*'
