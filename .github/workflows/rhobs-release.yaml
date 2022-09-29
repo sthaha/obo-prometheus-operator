@@ -5,6 +5,7 @@ on:
     branches:
       - 'rhobs-rel-*'
 
+jobs:
   create-release:
     runs-on: ubuntu-latest
     if: "startsWith(github.event.head_commit.message, 'chore(release):')"
@@ -15,13 +16,13 @@ on:
           fetch-depth: 0
           token: ${{ secrets.GH_PUSH_TOKEN }}
 
-      # - name: Import common environment variables
-      #   run: cat ".github/env" >> $GITHUB_ENV
+      - name: Import common environment variables
+        run: cat ".github/env" >> $GITHUB_ENV
 
-      # - name: Install Go
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: '${{ env.golang-version }}'
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '${{ env.golang-version }}'
 
       - name: login to quay.io
         uses: docker/login-action@v2
@@ -33,7 +34,7 @@ on:
       - name: Publish tag
         id: git_tag
         run: |
-          version="$(head -1 VERSION)
+          version="$(head -1 VERSION)"
           git config user.name rhobs-release-bot
           git config user.email release-bot@monitoring.rhobs.io
 
@@ -43,6 +44,7 @@ on:
 
           git push --follow-tags
 
+      # TODO:  <29-09-22, sthaha> # should we create a release?
       - name: Build RHOBS images and push
         env:
           IMAGE_ORG: ${{ secrets.IMAGE_ORG }}
@@ -54,8 +56,6 @@ on:
           CPU_ARCHS="amd64" \
           ./scripts/push-docker-image.sh
 
-
-          # TODO:  <29-09-22, sthaha> # should we create a release?
           echo ::set-output name=tag_name::$(git describe HEAD --abbrev=0)
 
           #       - name: Create Github release
