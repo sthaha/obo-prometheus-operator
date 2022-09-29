@@ -1,5 +1,5 @@
 # The workflow create a git tag and publishes container images
-name: release
+name: rhobs release
 on:
   push:
     branches:
