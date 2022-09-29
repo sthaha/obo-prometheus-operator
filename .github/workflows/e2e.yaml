@@ -1,11 +1,12 @@
 name: e2e
 on:
   pull_request:
+    branches:
+      - 'rhobs-rel-*'
   push:
     branches:
       - 'rhobs-rel-*'
-    tags:
-      - 'v*'
+
 jobs:
   e2e-tests:
     name: E2E tests

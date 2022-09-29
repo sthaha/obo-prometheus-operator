@@ -1,11 +1,12 @@
 name: checks
 on:
   pull_request:
+    branches:
+      - 'rhobs-rel-*'
   push:
     branches:
       - 'rhobs-rel-*'
-    # tags:
-      # - 'v*'
+
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
