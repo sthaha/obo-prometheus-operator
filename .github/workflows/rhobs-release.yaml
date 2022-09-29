@@ -1,0 +1,77 @@
+# The workflow create a git tag and publishes container images
+name: rhobs release
+on:
+  push:
+    branches:
+      - 'rhobs-rel-**'
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
+    steps:
+      - name: Import common environment variables
+        run: |
+          echo "Skipping release workflow"
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: "startsWith(github.event.head_commit.message, 'chore(release):')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PUSH_TOKEN }}
+
+      - name: Import common environment variables
+        run: cat ".github/env" >> $GITHUB_ENV
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '${{ env.golang-version }}'
+
+      - name: login to quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.quay_repo_username }}
+          password: ${{ secrets.quay_repo_password }}
+
+      - name: create git tag
+        id: git_tag
+        run: |
+          version="$(head -1 VERSION)"
+          git config user.name rhobs-release-bot
+          git config user.email release-bot@monitoring.rhobs.io
+
+          git tag -a "v${version}" -m "v${version}"
+          git tag -a "pkg/apis/monitoring/v${version}" -m "v${version}"
+          git tag -a "pkg/client/monitoring/v${version}" -m "v${version}"
+
+
+      # TODO:  <29-09-22, sthaha> # should we create a release?
+      - name: Build RHOBS images and push
+        env:
+          IMAGE_ORG: ${{ secrets.IMAGE_ORG }}
+        run: |
+          REGISTRIES="quay.io" \
+          IMAGE_ORG=$IMAGE_ORG \
+          CPU_ARCHS="amd64" \
+          TAG="v$(head -1 VERSION)" \
+          ./rhobs/push-container-images.sh
+
+          echo ::set-output name=tag_name::$(git describe HEAD --abbrev=0)
+
+      - name: create git tag
+        run: |
+          git push --tags
+
+          #       - name: Create Github release
+          #         uses: actions/create-release@v1
+          #         env:
+          #           GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_TOKEN }}
+          #         with:
+          #           release_name: ${{ steps.git_tag.outputs.tag_name }}
+          #           tag_name: ${{ steps.git_tag.outputs.tag_name }}
