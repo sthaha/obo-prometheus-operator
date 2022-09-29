@@ -2,8 +2,8 @@
 name: rhobs release
 on:
   push:
-    # branches:
-    #   - 'rhobs-rel-*'
+    branches:
+      - 'rhobs-rel-**'
 
 jobs:
   debug:
