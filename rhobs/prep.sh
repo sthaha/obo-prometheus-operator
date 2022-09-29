@@ -95,8 +95,8 @@ main() {
   git commit -m "chore(release): v${version}"
 
   # TODO(sthaha): support --no-checks to disable checks locally
-  make check-docs check-golang check-license check-metrics
-  make test-unit
+  # make check-docs check-golang check-license check-metrics
+  # make test-unit
 
   git diff --shortstat --exit-code
   # generate_stripped_down_crds
