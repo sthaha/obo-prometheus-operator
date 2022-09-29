@@ -1,10 +1,9 @@
 # The workflow create a git tag and publishes container images
 name: rhobs release
-on: push
-# on:
-#   push:
-#     branches:
-#       - 'rhobs-rel-**'
+on:
+  push:
+    branches:
+      - 'rhobs-rel-**'
 
 jobs:
   debug:
