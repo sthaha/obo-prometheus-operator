@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring"
+	"github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -344,7 +344,7 @@ type CommonPrometheusFields struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="prom"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version",description="The version of Prometheus"
 // +kubebuilder:printcolumn:name="Desired",type="integer",JSONPath=".spec.replicas",description="The number of desired replicas"
 // +kubebuilder:printcolumn:name="Ready",type="integer",JSONPath=".status.availableReplicas",description="The number of ready replicas"
@@ -546,10 +546,10 @@ type PrometheusRuleExcludeConfig struct {
 
 // ObjectReference references a PodMonitor, ServiceMonitor, Probe or PrometheusRule object.
 type ObjectReference struct {
-	// Group of the referent. When not specified, it defaults to `monitoring.coreos.com`
+	// Group of the referent. When not specified, it defaults to `monitoring.rhobs`
 	// +optional
-	// +kubebuilder:default:="monitoring.coreos.com"
-	// +kubebuilder:validation:Enum=monitoring.coreos.com
+	// +kubebuilder:default:="monitoring.rhobs"
+	// +kubebuilder:validation:Enum=monitoring.rhobs
 	Group string `json:"group"`
 	// Resource of the referent.
 	// +kubebuilder:validation:Required
@@ -1210,7 +1210,7 @@ type AlertmanagerEndpoints struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="smon"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 
 // ServiceMonitor defines monitoring for a set of services.
 type ServiceMonitor struct {
@@ -1319,7 +1319,7 @@ type Endpoint struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="pmon"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 
 // PodMonitor defines monitoring for a set of pods.
 type PodMonitor struct {
@@ -1428,7 +1428,7 @@ type PodMetricsEndpointTLSConfig struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="prb"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 
 // Probe defines monitoring for a set of static targets or ingresses.
 type Probe struct {
@@ -1801,7 +1801,7 @@ type PrometheusRuleList struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="promrule"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 
 // PrometheusRule defines recording and alerting rules for a Prometheus instance
 type PrometheusRule struct {
@@ -1864,7 +1864,7 @@ type Rule struct {
 
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="am"
+// +kubebuilder:resource:categories="rhobs-prometheus-operator"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version",description="The version of Alertmanager"
 // +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The number of desired replicas"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
