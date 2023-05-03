@@ -14,9 +14,53 @@ OPERATOR_IMG = $(IMAGE_BASE):$(VERSION)
 CONTAINER_RUNTIME := $(shell command -v podman 2> /dev/null || echo docker)
 
 # tools
-OPERATOR_SDK = $(PRJ_DIR)/tmp/bin/operator-sdk
-KUSTOMIZE =$(PRJ_DIR)/tmp/bin/kustomize
-OPM = $(PRJ_DIR)/tmp/bin/opm
+TOOLS_DIR = $(PRJ_DIR)/tmp/bin
+
+KUSTOMIZE=$(TOOLS_DIR)/kustomize
+KUSTOMIZE_VERSION= v5.0.1
+
+OPERATOR_SDK = $(TOOLS_DIR)/operator-sdk
+OPERATOR_SDK_VERSION = v1.24.0
+
+OPM=$(TOOLS_DIR)/opm
+OPM_VERSION = v1.26.1
+
+$(TOOLS_DIR):
+	@mkdir -p $(TOOLS_DIR)
+
+.PHONY: kustomize
+$(KUSTOMIZE) kustomize: $(TOOLS_DIR)
+	@{ \
+		set -ex ;\
+		[[ -f $(KUSTOMIZE) ]] && exit 0 ;\
+		GOBIN=$(TOOLS_DIR) go install sigs.k8s.io/kustomize/kustomize/v5@latest ;\
+	}
+
+.PHONY: operator-sdk
+$(OPERATOR_SDK) operator-sdk: $(TOOLS_DIR)
+	@{ \
+		set -ex ;\
+		[[ -f $(OPERATOR_SDK) ]] && \
+		[[ "$(shell $(OPERATOR_SDK) version | awk '{print $$3}' | tr -d ,)" == $(OPERATOR_SDK_VERSION) ]] && { \
+			echo "operator-sdk up to date" ;\
+			exit 0 ;\
+		} ;\
+		OS=$(shell go env GOOS) && ARCH=$(shell go env GOARCH) && \
+		curl -sSLo $(OPERATOR_SDK) https://github.com/operator-framework/operator-sdk/releases/download/$(OPERATOR_SDK_VERSION)/operator-sdk_$${OS}_$${ARCH} ;\
+		chmod +x $(OPERATOR_SDK) ;\
+	}
+
+.PHONY: opm
+$(OPM) opm: $(TOOLS_DIR)
+	@{ \
+		[[ -f $(OPM) ]] && exit 0 ;\
+		set -ex ;\
+		OS=$(shell go env GOOS) && ARCH=$(shell go env GOARCH) && \
+		curl -sSLo $(OPM) https://github.com/operator-framework/operator-registry/releases/download/$(OPM_VERSION)/$${OS}-$${ARCH}-opm ;\
+		chmod +x $(OPM) ;\
+	}
+
+tools: kustomize operator-sdk opm
 
 
 ## OLM - Bundle
@@ -44,6 +88,7 @@ ifneq ($(origin DEFAULT_CHANNEL), undefined)
 BUNDLE_DEFAULT_CHANNEL := --default-channel=$(DEFAULT_CHANNEL)
 endif
 BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
+
 
 
 
