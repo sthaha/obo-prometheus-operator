@@ -109,7 +109,7 @@ require (
 )
 
 replace (
-	github.com/rhobs/obo-prometheus-operator => github.com/sthaha/obo-prometheus-operator v0.64.0-rhobs2
-	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring => github.com/sthaha/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs2
-	github.com/rhobs/obo-prometheus-operator/pkg/client => github.com/sthaha/obo-prometheus-operator/pkg/client v0.64.0-rhobs2
+	github.com/rhobs/obo-prometheus-operator => ../../../
+	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring => ../../../pkg/apis/monitoring
+	github.com/rhobs/obo-prometheus-operator/pkg/client => ../../../pkg/client
 )
