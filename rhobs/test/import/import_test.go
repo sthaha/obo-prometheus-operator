@@ -15,14 +15,13 @@
 package test
 
 import (
-	"fmt"
 	"testing"
 
-	monv1 "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1"
+	api "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1"
 	op "github.com/rhobs/obo-prometheus-operator/pkg/operator"
 )
 
-func TestDefalThanosImage(t *testing.T) {
-	fmt.Printf("DefaultThanosImage is %s\n", op.DefaultThanosImage)
-	fmt.Printf("PrometheusRuleName is %s\n", monv1.PrometheusRuleName)
+func TestPackageImports(t *testing.T) {
+	t.Logf("DefaultThanosImage is %s\n", op.DefaultThanosImage)
+	t.Logf("PrometheusRuleName is %s\n", api.PrometheusRuleName)
 }
