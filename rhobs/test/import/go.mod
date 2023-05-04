@@ -3,8 +3,8 @@ module rhobs-test
 go 1.20
 
 require (
-	github.com/rhobs/obo-prometheus-operator v0.64.0-rhobs1
-	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs1
+	github.com/rhobs/obo-prometheus-operator v0.64.0-rhobs2
+	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs2
 )
 
 require (
