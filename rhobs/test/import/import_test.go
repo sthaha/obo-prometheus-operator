@@ -18,10 +18,12 @@ import (
 	"testing"
 
 	api "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1"
+	client "github.com/rhobs/obo-prometheus-operator/pkg/client/versioned"
 	op "github.com/rhobs/obo-prometheus-operator/pkg/operator"
 )
 
 func TestPackageImports(t *testing.T) {
 	t.Logf("DefaultThanosImage is %s\n", op.DefaultThanosImage)
 	t.Logf("PrometheusRuleName is %s\n", api.PrometheusRuleName)
+	t.Logf("Clientset is %v\n", client.Clientset{})
 }

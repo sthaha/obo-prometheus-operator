@@ -420,8 +420,6 @@ github.com/prometheus/procfs v0.9.0 h1:wzCHvIvM5SxWqYvwgVL7yJY8Lz3PKn49KQtpgMYJf
 github.com/prometheus/procfs v0.9.0/go.mod h1:+pB4zwohETzFnmlpe6yd2lSc+0/46IYZRB/chUwxUZY=
 github.com/prometheus/prometheus v0.43.0 h1:18iCSfrbAHbXvYFvR38U1Pt4uZmU9SmDcCpCrBKUiGg=
 github.com/prometheus/prometheus v0.43.0/go.mod h1:2BA14LgBeqlPuzObSEbh+Y+JwLH2GcqDlJKbF2sA6FM=
-github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs1 h1:Qhl93ZzAfhLZC/LQpZwgJrsWW1A0oEJvEHD4Bm6Tt3c=
-github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs1/go.mod h1:p+YsgXodntOtgwXKTpWrJzVS7QmMfZlGDG0v6Noze7s=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.1.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.2.2/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=

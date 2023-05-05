@@ -1,10 +1,11 @@
-module rhobs-test
+module rhobs
 
 go 1.20
 
 require (
 	github.com/rhobs/obo-prometheus-operator v0.64.0-rhobs2
 	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring v0.64.0-rhobs2
+	github.com/rhobs/obo-prometheus-operator/pkg/client v0.64.0-rhobs2
 )
 
 require (
@@ -67,7 +68,6 @@ require (
 	github.com/prometheus/common/sigv4 v0.1.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/prometheus/prometheus v0.43.0 // indirect
-	github.com/rhobs/obo-prometheus-operator/pkg/client v0.64.0-rhobs1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
@@ -108,8 +108,8 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace github.com/rhobs/obo-prometheus-operator => ../../..
-
-replace github.com/rhobs/obo-prometheus-operator/pkg/client => ../../../pkg/client
-
-replace github.com/rhobs/obo-prometheus-operator/pks/apis/monitoring => ../../../pkg/apis/monitoring/
+replace (
+	github.com/rhobs/obo-prometheus-operator => ../../..
+	github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring => ../../../pkg/apis/monitoring/
+	github.com/rhobs/obo-prometheus-operator/pkg/client => ../../../pkg/client
+)
