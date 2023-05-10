@@ -1,4 +1,4 @@
-IMAGE ?= quay.io/prometheus-operator/instrumented-sample-app
+IMAGE ?= quay.io/rhobs/obo-instrumented-sample-app
 TAG ?= latest
 VERSION=$(shell cat VERSION)
 

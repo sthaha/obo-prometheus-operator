@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: example-app
-        image: quay.io/prometheus-operator/instrumented-sample-app:latest
+        image: quay.io/rhobs/obo-instrumented-sample-app:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: web
