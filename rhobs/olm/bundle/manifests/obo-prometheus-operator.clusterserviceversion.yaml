@@ -1,0 +1,339 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+    createdAt: "2023-05-11T06:28:59Z"
+    operators.operatorframework.io/builder: operator-sdk-v1.28.1
+    operators.operatorframework.io/project_layout: unknown
+  name: obo-prometheus-operator.v0.65.1-rhobs1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: AlertmanagerConfig
+      name: alertmanagerconfigs.monitoring.rhobs
+      version: v1alpha1
+    - kind: Alertmanager
+      name: alertmanagers.monitoring.rhobs
+      version: v1
+    - kind: PodMonitor
+      name: podmonitors.monitoring.rhobs
+      version: v1
+    - kind: Probe
+      name: probes.monitoring.rhobs
+      version: v1
+    - kind: PrometheusAgent
+      name: prometheusagents.monitoring.rhobs
+      version: v1alpha1
+    - kind: Prometheus
+      name: prometheuses.monitoring.rhobs
+      version: v1
+    - kind: PrometheusRule
+      name: prometheusrules.monitoring.rhobs
+      version: v1
+    - kind: ScrapeConfig
+      name: scrapeconfigs.monitoring.rhobs
+      version: v1alpha1
+    - kind: ServiceMonitor
+      name: servicemonitors.monitoring.rhobs
+      version: v1
+    - kind: ThanosRuler
+      name: thanosrulers.monitoring.rhobs
+      version: v1
+  description: Obo Prometheus Operator description. TODO.
+  displayName: Obo Prometheus Operator
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - monitoring.rhobs
+          resources:
+          - alertmanagers
+          - alertmanagers/finalizers
+          - alertmanagers/status
+          - alertmanagerconfigs
+          - prometheuses
+          - prometheuses/finalizers
+          - prometheuses/status
+          - prometheusagents
+          - prometheusagents/finalizers
+          - prometheusagents/status
+          - thanosrulers
+          - thanosrulers/finalizers
+          - thanosrulers/status
+          - scrapeconfigs
+          - servicemonitors
+          - podmonitors
+          - probes
+          - prometheusrules
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          verbs:
+          - list
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          - services/finalizers
+          - endpoints
+          verbs:
+          - get
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - networking.k8s.io
+          resources:
+          - ingresses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - nonroot-v2
+          - nonroot
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: rhobs-prometheus-operator
+      - rules:
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - nonroot-v2
+          - nonroot
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: rhobs-prometheus-operator-admission-webhook
+      deployments:
+      - label:
+          app.kubernetes.io/component: controller
+          app.kubernetes.io/name: prometheus-operator
+          app.kubernetes.io/part-of: rhobs-prometheus-operator
+          app.kubernetes.io/version: 0.65.1-rhobs1
+        name: rhobs-prometheus-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app.kubernetes.io/component: controller
+              app.kubernetes.io/name: prometheus-operator
+              app.kubernetes.io/part-of: rhobs-prometheus-operator
+          strategy: {}
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: prometheus-operator
+                target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+              labels:
+                app.kubernetes.io/component: controller
+                app.kubernetes.io/name: prometheus-operator
+                app.kubernetes.io/part-of: rhobs-prometheus-operator
+                app.kubernetes.io/version: 0.65.1-rhobs1
+            spec:
+              automountServiceAccountToken: true
+              containers:
+              - args:
+                - --prometheus-config-reloader=quay.io/rhobs/obo-prometheus-config-reloader:v0.65.1-rhobs1
+                image: quay.io/rhobs/obo-prometheus-operator:v0.65.1-rhobs1
+                name: prometheus-operator
+                ports:
+                - containerPort: 8080
+                  name: http
+                resources:
+                  limits:
+                    cpu: 100m
+                    memory: 500Mi
+                  requests:
+                    cpu: 5m
+                    memory: 250Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  readOnlyRootFilesystem: true
+                terminationMessagePolicy: FallbackToLogsOnError
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65534
+                seccompProfile:
+                  type: RuntimeDefault
+              serviceAccountName: rhobs-prometheus-operator
+      - label:
+          app.kubernetes.io/name: prometheus-operator-admission-webhook
+          app.kubernetes.io/part-of: rhobs-prometheus-operator
+          app.kubernetes.io/version: 0.65.1-rhobs1
+        name: rhobs-prometheus-operator-admission-webhook
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus-operator-admission-webhook
+              app.kubernetes.io/part-of: rhobs-prometheus-operator
+          strategy:
+            rollingUpdate:
+              maxUnavailable: 1
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: prometheus-operator-admission-webhook
+              labels:
+                app.kubernetes.io/name: prometheus-operator-admission-webhook
+                app.kubernetes.io/part-of: rhobs-prometheus-operator
+                app.kubernetes.io/version: 0.65.1-rhobs1
+            spec:
+              affinity:
+                podAntiAffinity:
+                  requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: prometheus-operator-admission-webhook
+                        app.kubernetes.io/part-of: rhobs-prometheus-operator
+                    namespaces:
+                    - default
+                    topologyKey: kubernetes.io/hostname
+              automountServiceAccountToken: false
+              containers:
+              - args:
+                - --web.enable-tls=true
+                - --web.cert-file=/tmp/k8s-webhook-server/serving-certs/tls.crt
+                - --web.key-file=/tmp/k8s-webhook-server/serving-certs/tls.key
+                image: quay.io/rhobs/obo-admission-webhook:v0.65.1-rhobs1
+                name: prometheus-operator-admission-webhook
+                ports:
+                - containerPort: 8443
+                  name: https
+                resources:
+                  limits:
+                    cpu: 200m
+                    memory: 200Mi
+                  requests:
+                    cpu: 50m
+                    memory: 50Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  readOnlyRootFilesystem: true
+                terminationMessagePolicy: FallbackToLogsOnError
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65534
+                seccompProfile:
+                  type: RuntimeDefault
+              serviceAccountName: rhobs-prometheus-operator-admission-webhook
+    strategy: deployment
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - obo-prometheus-operator
+  links:
+  - name: Obo Prometheus Operator
+    url: https://obo-prometheus-operator.domain
+  maintainers:
+  - email: your@email.com
+    name: Maintainer Name
+  maturity: alpha
+  provider:
+    name: Provider Name
+    url: https://your.domain
+  version: 0.65.1-rhobs1
+  webhookdefinitions:
+  - admissionReviewVersions:
+    - v1
+    containerPort: 443
+    deploymentName: rhobs-prometheus-operator-admission-webhook
+    failurePolicy: Ignore
+    generateName: alertmanagerconfigs.monitoring.rhobs
+    rules:
+    - apiGroups:
+      - monitoring.rhobs
+      apiVersions:
+      - '*'
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - alertmanagerconfigs
+      scope: Namespaced
+    sideEffects: None
+    targetPort: https
+    timeoutSeconds: 5
+    type: ValidatingAdmissionWebhook
+    webhookPath: /admission-alertmanagerconfigs/validate
+  - admissionReviewVersions:
+    - v1
+    containerPort: 443
+    deploymentName: rhobs-prometheus-operator-admission-webhook
+    failurePolicy: Ignore
+    generateName: prometheusrules.monitoring.rhobs
+    rules:
+    - apiGroups:
+      - monitoring.rhobs
+      apiVersions:
+      - '*'
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - prometheusrules
+      scope: Namespaced
+    sideEffects: None
+    targetPort: https
+    timeoutSeconds: 5
+    type: ValidatingAdmissionWebhook
+    webhookPath: /admission-prometheusrules/validate
