@@ -40,12 +40,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	certutil "k8s.io/client-go/util/cert"
 
-	"github.com/prometheus-operator/prometheus-operator/pkg/alertmanager"
-	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	monitoringv1alpha1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1alpha1"
-	monitoringv1beta1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1beta1"
-	"github.com/prometheus-operator/prometheus-operator/pkg/operator"
-	testFramework "github.com/prometheus-operator/prometheus-operator/test/framework"
+	"github.com/rhobs/obo-prometheus-operator/pkg/alertmanager"
+	monitoringv1 "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1"
+	monitoringv1alpha1 "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1alpha1"
+	monitoringv1beta1 "github.com/rhobs/obo-prometheus-operator/pkg/apis/monitoring/v1beta1"
+	"github.com/rhobs/obo-prometheus-operator/pkg/operator"
+	testFramework "github.com/rhobs/obo-prometheus-operator/test/framework"
 	"k8s.io/utils/pointer"
 )
 
@@ -526,7 +526,7 @@ func testAMZeroDowntimeRollingDeployment(t *testing.T) {
 					Containers: []v1.Container{
 						{
 							Name:  "webhook-server",
-							Image: "quay.io/prometheus-operator/prometheus-alertmanager-test-webhook:latest",
+							Image: "quay.io/rhobs/obo-prometheus-alertmanager-test-webhook:latest",
 							Ports: []v1.ContainerPort{
 								{
 									Name:          "web",
@@ -1415,7 +1415,7 @@ templates: []
 	// Remove the selecting label from the namespace holding the
 	// AlertmanagerConfig resources and wait until the Alertmanager
 	// configuration gets regenerated.
-	// See https://github.com/prometheus-operator/prometheus-operator/issues/3847
+	// See https://github.com/rhobs/obo-prometheus-operator/issues/3847
 	if err := framework.RemoveLabelsFromNamespace(context.Background(), configNs, "monitored"); err != nil {
 		t.Fatal(err)
 	}
